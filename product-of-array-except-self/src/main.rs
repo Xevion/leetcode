@@ -6,7 +6,6 @@ impl Solution {
         let mut left = 1;
         let mut right = 1;
 
-        println!("{:?}", result);
         for i in 0..nums.len() {
             // Moving left to right: multiple each number by the preceding number
             result[i] *= left;
