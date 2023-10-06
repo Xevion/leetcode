@@ -3,8 +3,7 @@
 // Memory Usage: 54.7 MB
 // Submitted: January 14th, 2021
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.HashMap;
 
 class Solution {
     HashMap<String, Integer> count = new HashMap<String, Integer>();

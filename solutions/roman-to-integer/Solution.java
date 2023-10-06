@@ -3,6 +3,9 @@
 // Memory Usage: 39.3 MB
 // Submitted: January 15th, 2021
 
+import java.util.HashMap;
+import java.util.Map;
+
 class Solution {
     Map<Character, Integer> convert = new HashMap<Character, Integer>();
     

@@ -3,6 +3,9 @@
 // Memory Usage: 39.1 MB
 // Submitted: January 13th, 2021
 
+import java.util.HashMap;
+import java.util.Map;
+
 class Solution {
     public int lengthOfLongestSubstring(String s) {
         int max = 0;

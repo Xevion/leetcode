@@ -6,6 +6,12 @@
 // that worked, but it also used RegEx, did operations it didn't need to, and overall was much too complex and aggressive to work well.
 // The correct solution was much simpler and more concise. It did technically work, though!
 
+import java.util.Map;
+import java.util.Set;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 

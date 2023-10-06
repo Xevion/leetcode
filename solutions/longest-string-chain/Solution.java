@@ -3,6 +3,10 @@
 // Memory Usage: 39.1 MB
 // Submitted: January 14th, 2021
 
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+
 class Solution {
     public int longestStrChain(String[] words) {
         Map<String, Integer> chain = new HashMap<String, Integer>();

@@ -3,6 +3,9 @@
 // Memory Usage: 39.7 MB
 // Submitted: January 12th, 2021
 
+import java.util.HashMap;
+import java.util.Map;
+
 class Solution {
     public int[] twoSum(int[] nums, int target) {
         Map<Integer, Integer> map = new HashMap<>();

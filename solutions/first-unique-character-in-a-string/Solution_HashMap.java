@@ -3,6 +3,9 @@
 // Memory Usage: 39.5 MB
 // Submitted: January 14th, 2021
 
+import java.util.Map;
+import java.util.HashMap;
+
 class Solution {
     public int firstUniqChar(String s) {
         Map<Character, Integer> count = new HashMap<Character, Integer>();
