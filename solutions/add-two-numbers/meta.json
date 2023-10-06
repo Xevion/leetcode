@@ -1,0 +1,9 @@
+{
+    "name": "Add Two Numbers",
+    "solutions": [
+        {
+            "name": "Java",
+            "path": "Solution.java"
+        }
+    ]
+}
