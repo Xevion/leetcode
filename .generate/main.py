@@ -1,7 +1,7 @@
-#!/usr/bin/env python3
 from datetime import datetime
 from pathlib import Path
 from jinja2 import Template
+import logging
 import json
 
 """
@@ -23,26 +23,8 @@ ROOT_DIRECTORY: Path = SCRIPTS_DIRECTORY.parent
 TEMPLATE_PATH: Path = SCRIPTS_DIRECTORY / "TEMPLATE.j2"
 SOLUTIONS_DIRECTORY: Path = SCRIPTS_DIRECTORY.parent / "solutions"
 
-
-def get_solution(solution_directory: Path) -> dict:
-    """
-    Returns a dictionary containing information about the solution.
-    The dictionary is created by reading the `meta.json` file in the solution directory.
-    """
-
-    with (solution_directory / "meta.json").open("r") as meta_file:
-        meta = json.load(meta_file)
-
-    solutions = " ".join(
-        f"[{solution['name']}](/{(solution_directory / solution['path']).relative_to(ROOT_DIRECTORY)})" for solution in meta["solutions"]
-    )
-
-    return {
-        "number": 123,
-        "title": meta["title"],
-        "solutions": solutions,
-        "difficulty": "kinda hard idk",
-    }
+logging.basicConfig(level=logging.DEBUG)
+logger = logging.getLogger(__name__)
 
 
 def is_solution_ready(solution_directory: Path) -> bool:
@@ -60,35 +42,57 @@ def is_solution_ready(solution_directory: Path) -> bool:
     return True
 
 
-def main():
-    # Get all solution directories
-    solutions = list(map(
-        get_solution, filter(is_solution_ready, SOLUTIONS_DIRECTORY.glob("*"))
-    ))
+def generate_row(solution_directory: Path) -> str:
+    """
+    Returns a dictionary containing information about the solution.
+    The dictionary is created by reading the `meta.json` file in the solution directory.
+    """
 
+    with (solution_directory / "meta.json").open("r") as meta_file:
+        meta = json.load(meta_file)
+
+    solutions = " ".join(
+        f"[{solution['name']}](/{(solution_directory / solution['path']).relative_to(ROOT_DIRECTORY)})"
+        for solution in meta["solutions"]
+    )
+
+    columns = [
+        123,
+        meta["title"],
+        solutions,
+        "kinda hard idk",
+    ]
+
+    return "| " + " | ".join(map(str, columns)) + " |"
+
+
+def main():
     # TODO: Prevent inclusion of a solution if a linked source file includes a "EXCLUDE" tag.
     # TODO: Include, but mark as "in-progress" if a linked source file includes a "WIP" or "WORK IN PROGRESS" tag (case insensitive).
     # TODO: Generate the README.md file
+    from questions import QuestionDatabase
+
+    database = QuestionDatabase(
+        cache_path=ROOT_DIRECTORY / "questions.json", cache_time=60 * 60 * 24
+    )
 
     table = [
         "| # | Title | Solution | Difficulty |",
-        "|---| ----- | -------- | ---------- |",
+        "|-|-|-|-|",
     ]
 
     table.extend(
-        [
-            f"| {solution['number']} | {solution['title']} | {solution['solutions']} | {solution['difficulty']} |"
-            for solution in solutions
-        ]
+        map(generate_row, filter(is_solution_ready, SOLUTIONS_DIRECTORY.glob("*")))
     )
     table = "\n".join(table)
 
-
     with TEMPLATE_PATH.open("r") as template_file:
         template = Template(template_file.read())
-    
+
     with (ROOT_DIRECTORY / "README.md").open("w") as readme_file:
-        readme_file.write(template.render(date=datetime.now().strftime("%Y-%m-%d"), table=table))
+        readme_file.write(
+            template.render(date=datetime.now().strftime("%Y-%m-%d"), table=table)
+        )
 
 
 if __name__ == "__main__":
