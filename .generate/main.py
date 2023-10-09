@@ -77,7 +77,7 @@ def main():
         with (directory / "meta.json").open("r") as meta_file:
             meta = json.load(meta_file)
         
-        solutions = " ".join(
+        solutions = ", ".join(
             f"[{solution['name']}](/{(directory / solution['path']).relative_to(ROOT_DIRECTORY)})"
             for solution in meta["solutions"]
         )
@@ -88,8 +88,8 @@ def main():
             )
 
         columns = [
-            question.id,
-            question.title,
+            f"[{question.id}]({question.url})",
+            f"[{question.title}]({question.url})",
             solutions,
             question.difficulty,
         ]

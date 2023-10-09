@@ -39,6 +39,13 @@ class Question(BaseModel):
     difficulty: str
     tags: List[Tag]
 
+    @property
+    def url(self) -> str:
+        """
+        Gets the URL to the question.
+        """
+        return f"https://leetcode.com/problems/{self.slug}"
+
 
 class QuestionDatabase(object):
     """
