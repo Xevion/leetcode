@@ -5,6 +5,8 @@ impl Solution {
         let (a_length, b_length) = (a.len(), b.len());
         let (mut a_pointer, mut b_pointer, mut current, mut previous) = (0, 0, 0, 0);
 
+        // Iterate until middle + 1  [1, 2, 3, 4] => arr[2]
+        // On even length arrays, we need the previous value to calculate the median
         for _ in 0..=((a_length+b_length)/2) {
             previous = current;
 
