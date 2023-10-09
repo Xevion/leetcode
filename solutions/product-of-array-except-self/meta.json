@@ -1,0 +1,8 @@
+{
+    "solutions": [
+        {
+            "name": "Rust",
+            "path": "./src/main.rs"
+        }
+    ]
+}

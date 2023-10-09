@@ -1,0 +1,8 @@
+{
+    "solutions": [
+        {
+            "name": "Rust (Two Pointers)",
+            "path": "./src/bin/two-pointers.rs"
+        }
+    ]
+}

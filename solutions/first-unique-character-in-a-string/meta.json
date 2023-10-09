@@ -3,6 +3,10 @@
         {
             "name": "Java",
             "path": "Solution.java"
+        },
+        {
+            "name": "Java (HashMap)",
+            "path": "Solution_HashMap.java"
         }
     ]
 }

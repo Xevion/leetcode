@@ -1,0 +1,16 @@
+{
+    "solutions": [
+        {
+            "name": "Java",
+            "path": "Solution.java"
+        },
+        {
+            "name": "Java (RegEx)",
+            "path": "Solution_regex.java"
+        },
+        {
+            "name": "Python",
+            "path": "Solution.py"
+        }
+    ]
+}
