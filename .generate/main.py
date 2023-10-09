@@ -91,6 +91,7 @@ def main():
             f"[{question.title}]({question.url})",
             solutions,
             question.difficulty,
+            ", ".join(f"[{tag.name}](/categories/{tag.slug.upper()}.md)" for tag in question.tags),
         ]
 
         row = "| " + " | ".join(map(str, columns)) + " |"
