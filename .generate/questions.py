@@ -36,6 +36,7 @@ class Question(BaseModel):
     id: int
     slug: str
     title: str
+    difficulty: str
     tags: List[Tag]
 
 
@@ -44,12 +45,13 @@ class QuestionDatabase(object):
     A class for managing the question database.
     """
 
-    def __init__(self, cache_path: Path, cache_time: int) -> None:
+    def __init__(self, cache_path: Path, cache_time: int, debug: bool = False) -> None:
         """
         Initializes the question database.
 
         :param cache_time: The amount of time to cache all questions for, in seconds.
         """
+        self.debug = debug
         self.client = Session()
         self.client.headers["Content-Type"] = "application/json"
         self.client.headers["Referer"] = "https://leetcode.com/problemset/all/"
@@ -71,9 +73,12 @@ class QuestionDatabase(object):
                     Question(**question) for question in raw_cache["questions"]
                 ]
                 logger.info(f"Loaded {len(self.questions)} questions from cache.")
+        else:
+            logger.info(f"Cache file {cache_path} does not exist.")
 
         # Question data wasn't loaded from the cache, so we fetch it (and store it in the cache) now
         if self.questions is None:
+
             # Make sure the directory holding it does exist (this shouldn't ever be raised, so this is just a sanity check)
             if not cache_path.parent.exists():
                 raise RuntimeError(
@@ -81,7 +86,7 @@ class QuestionDatabase(object):
                 )
 
             logger.info("Fetching questions from LeetCode...")
-            fetch_time = time.time()
+            fetch_time = int(time.time())
             self.questions = self.fetch()
 
             logger.info(f"Writing {len(self.questions)} questions to cache...")
@@ -160,22 +165,26 @@ class QuestionDatabase(object):
                 "variables": {
                     "categorySlug": "",
                     "filters": {},
-                    "limit": 50,
+                    "limit": 50 if self.debug else total,
                 },
             },
         )
+
+        logger.debug("{:,} bytes received.".format(len(questions_response.content)))
 
         if not questions_response.ok:
             raise RuntimeError(
                 f"Failed to fetch questions: {questions_response.status_code} {questions_response.reason}"
             )
 
+        # Parse & extract question data into Pydantic models
         questions = questions_response.json()["data"]["questionsList"]["questions"]
         return [
             Question(
                 id=question["id"],
                 slug=question["titleSlug"],
                 title=question["title"],
+                difficulty=question["difficulty"],
                 tags=[
                     Tag(name=tag["name"], slug=tag["slug"])
                     for tag in question["topicTags"]
@@ -184,14 +193,14 @@ class QuestionDatabase(object):
             for question in questions
         ]
 
-    def get_by_id(self, question_id: int) -> Question:
+    def get_by_id(self, question_id: int) -> Question | None:
         """
         Gets a question by its ID.
         """
-        return self.by_id[question_id]
+        return self.by_id.get(question_id)
 
-    def get_by_slug(self, slug: str) -> Question:
+    def get_by_slug(self, slug: str) -> Question | None:
         """
         Gets a question by its slug.
         """
-        return self.by_slug[slug]
+        return self.by_slug.get(slug)
