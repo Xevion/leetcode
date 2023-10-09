@@ -82,9 +82,11 @@ def main():
             for solution in meta["solutions"]
         )
 
-        if len(solutions) > 15:
+        # The length of the solution name + 2 characters to join the solutions together (minus the last one)
+        space_used: int = sum(len(solution["name"] ) for solution in meta["solutions"]) + (len(meta["solutions"]) - 1) * 2
+        if space_used > 30:
             logger.warning(
-                f"Solution '{question.title}' has a long list of solutions ({len(solutions)})."
+                f"Solution '{question.title}' has a long list of solutions ({space_used})."
             )
 
         columns = [

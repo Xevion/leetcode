@@ -1,5 +1,9 @@
 # leetcode
 
+This repository contains my solutions to various problems on [LeetCode](https://leetcode.com/).
+
+Below is the full table containing all the problems I have solved so far. The table is [automatically generated](./.generate/main.py).
+
 | # | Title | Solution | Difficulty |
 |-|-|-|-|
 | [8](https://leetcode.com/problems/string-to-integer-atoi) | [String to Integer (atoi)](https://leetcode.com/problems/string-to-integer-atoi) | [Java](/solutions/string-to-integer-atoi/Solution.java) | Medium |
