@@ -21,7 +21,7 @@ class Solution {
         // Building the final st
         StringBuilder sb = new StringBuilder();
         while (!pq.isEmpty()) {
-            Map.Entry entry = pq.poll();
+            Map.Entry<Character, Integer> entry = pq.poll();
             char v = (char) entry.getKey();
             int n = (int) entry.getValue();
             
