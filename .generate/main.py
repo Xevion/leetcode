@@ -42,30 +42,6 @@ def is_solution_ready(solution_directory: Path) -> bool:
     return True
 
 
-def generate_row(solution_directory: Path) -> str:
-    """
-    Returns a dictionary containing information about the solution.
-    The dictionary is created by reading the `meta.json` file in the solution directory.
-    """
-
-    with (solution_directory / "meta.json").open("r") as meta_file:
-        meta = json.load(meta_file)
-
-    solutions = " ".join(
-        f"[{solution['name']}](/{(solution_directory / solution['path']).relative_to(ROOT_DIRECTORY)})"
-        for solution in meta["solutions"]
-    )
-
-    columns = [
-        123,
-        meta["title"],
-        solutions,
-        "kinda hard idk",
-    ]
-
-    return "| " + " | ".join(map(str, columns)) + " |"
-
-
 def main():
     # TODO: Prevent inclusion of a solution if a linked source file includes a "EXCLUDE" tag.
     # TODO: Include, but mark as "in-progress" if a linked source file includes a "WIP" or "WORK IN PROGRESS" tag (case insensitive).
@@ -81,9 +57,47 @@ def main():
         "|-|-|-|-|",
     ]
 
-    table.extend(
-        map(generate_row, filter(is_solution_ready, SOLUTIONS_DIRECTORY.glob("*")))
-    )
+    children = list(SOLUTIONS_DIRECTORY.glob("*/"))
+    logger.debug(f"Found {len(children)} children.")
+    for directory in children:
+        # Skip non-directories
+        if not directory.is_dir():
+            continue
+        
+        question = database.get_by_slug(directory.name)
+        if question is None:
+            logger.warning(f"Solution '{directory.name}' does not have a corresponding question in the database.")
+            continue
+    
+        # Skip directories without a meta.json file
+        if not (directory / "meta.json").exists():
+            logger.warning(f"Solution '{question.title}' does not have a meta.json file.")
+            continue
+
+        with (directory / "meta.json").open("r") as meta_file:
+            meta = json.load(meta_file)
+        
+        solutions = " ".join(
+            f"[{solution['name']}](/{(directory / solution['path']).relative_to(ROOT_DIRECTORY)})"
+            for solution in meta["solutions"]
+        )
+
+        if len(solutions) > 15:
+            logger.warning(
+                f"Solution '{question.title}' has a long list of solutions ({len(solutions)})."
+            )
+
+        columns = [
+            question.id,
+            question.title,
+            solutions,
+            question.difficulty,
+        ]
+
+        row = "| " + " | ".join(map(str, columns)) + " |"
+
+        table.append(row)
+
     table = "\n".join(table)
 
     with TEMPLATE_PATH.open("r") as template_file:
