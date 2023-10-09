@@ -91,7 +91,10 @@ def main():
             f"[{question.title}]({question.url})",
             solutions,
             question.difficulty,
-            ", ".join(f"[{tag.name}](/categories/{tag.slug.upper()}.md)" for tag in question.tags),
+            ", ".join(
+                # TODO: Generate category pages as a "filter" page for the README.md file.
+                # {/categories/tag.slug.upper()}.md
+                f"[{tag.name}]({tag.url})" for tag in question.tags),
         ]
 
         row = "| " + " | ".join(map(str, columns)) + " |"

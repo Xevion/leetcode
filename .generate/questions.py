@@ -27,6 +27,13 @@ class Tag(BaseModel):
     slug: str
     name: str
 
+    @property
+    def url(self) -> str:
+        """
+        Gets the URL to the tag.
+        """
+        return f"https://leetcode.com/tag/{self.slug}"
+
 
 class Question(BaseModel):
     """
