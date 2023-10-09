@@ -79,7 +79,7 @@ class QuestionDatabase(object):
                 self.questions = [
                     Question(**question) for question in raw_cache["questions"]
                 ]
-                logger.info(f"Loaded {len(self.questions)} questions from cache.")
+                logger.info(f"Loaded {len(self.questions):,} questions from cache.")
         else:
             logger.info(f"Cache file {cache_path} does not exist.")
 

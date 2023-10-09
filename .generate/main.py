@@ -52,10 +52,7 @@ def main():
         cache_path=ROOT_DIRECTORY / "questions.json", cache_time=60 * 60 * 24
     )
 
-    table = [
-        "| # | Title | Solution | Difficulty |",
-        "|-|-|-|-|",
-    ]
+    table = []
 
     children = list(SOLUTIONS_DIRECTORY.glob("*/"))
     logger.debug(f"Found {len(children)} children.")
@@ -90,24 +87,24 @@ def main():
             )
 
         columns = [
-            f"[{question.id}]({question.url})",
+            question.id,
             f"[{question.title}]({question.url})",
             solutions,
             question.difficulty,
         ]
 
         row = "| " + " | ".join(map(str, columns)) + " |"
+        table.append((question.id, row))
 
-        table.append(row)
-
-    table = "\n".join(table)
+    table.sort(key=lambda row: row[0])
+    rows = "\n".join(row[1] for row in table)
 
     with TEMPLATE_PATH.open("r") as template_file:
         template = Template(template_file.read())
 
     with (ROOT_DIRECTORY / "README.md").open("w") as readme_file:
         readme_file.write(
-            template.render(date=datetime.now().strftime("%Y-%m-%d"), table=table)
+            template.render(date=datetime.now().strftime("%Y-%m-%d"), rows=rows)
         )
 
 
