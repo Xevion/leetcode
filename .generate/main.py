@@ -49,7 +49,7 @@ def main():
     from questions import QuestionDatabase
 
     database = QuestionDatabase(
-        cache_path=ROOT_DIRECTORY / "questions.json", cache_time=60 * 60 * 24
+        cache_path=ROOT_DIRECTORY / "questions.json", cache_time=60 * 60 * 24 * 7  
     )
 
     table = []

@@ -2,7 +2,7 @@
 
 This repository contains my solutions to various problems on [LeetCode](https://leetcode.com/).
 
-Below is the full table containing all the problems I have solved so far. The table is [automatically generated](./.generate/main.py)automatically generated.
+Below is the full table containing all the problems I have solved so far. The table is [automatically generated](./.generate/main.py).
 | # | Title | Solution | Difficulty | Tags |
 |---| ----- | -------- | ---------- | ---- |
 | 1 | [Two Sum](https://leetcode.com/problems/two-sum) | [Java](/solutions/two-sum/Solution.java) | Easy | [Array](https://leetcode.com/tag/array), [Hash Table](https://leetcode.com/tag/hash-table) |
@@ -24,5 +24,5 @@ Below is the full table containing all the problems I have solved so far. The ta
 | 1636 | [Sort Array by Increasing Frequency](https://leetcode.com/problems/sort-array-by-increasing-frequency) | [Java](/solutions/sort-array-by-increasing-frequency/Solution.java) | Easy | [Array](https://leetcode.com/tag/array), [Hash Table](https://leetcode.com/tag/hash-table), [Sorting](https://leetcode.com/tag/sorting) |
 
 <sub>
-Generated on 2023-10-08
+Generated on 2023-10-09
 </sub>
